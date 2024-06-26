@@ -3,34 +3,35 @@ import apiClient from "../Services/apiClient"
 import { CanceledError } from "axios"
 
 
-export interface Platform{
-    id: number;
-    name: string;
-    slug: string;
-}
+
+
+
+// export interface Platform{
+//     id: number;
+//     name: string;
+//     slug: string;
+// }
 
 
 //help us shaping our data in the form of our interfaces(type) props to pass data from parent component to child
-export interface Game {
+export interface Genre {
     id: number
     name: string
-    background_image: string
-    parent_platforms: {platform:Platform}[]
-    metacritic: number
+
 }
 
-export interface FetchGameResponse {
+export interface FetchGenreResponse {
     count: number
-    results: Game []
+    results: Genre []
 }
 
 
 
 
-const useGames = () => {
+const useGenres = () => {
 
     //We need our UseState to help us render update our UI with our games and others
-const [games, setGames] = useState<Game[]>([])
+const [genres, setGenres] = useState<Genre[]>([])
 const [error, setError] = useState()
 const [isLoading, setIsLoading] = useState(false)
 
@@ -46,10 +47,10 @@ useEffect(() => {
 
     const controller = new AbortController();
     setIsLoading(true);
-    apiClient.get<FetchGameResponse>('/games' , {signal: controller.signal})
+    apiClient.get<FetchGenreResponse>('/genres' , {signal: controller.signal})
         .then(response => {
             setIsLoading(false)
-            setGames(response.data.results)
+            setGenres(response.data.results)
         })
             
         .catch(error  => {
@@ -64,8 +65,8 @@ useEffect(() => {
 
 }, [])
 
-return{games, error, isLoading}
+return{genres, error, isLoading}
 
 }
 
-export default useGames;
+export default useGenres;
