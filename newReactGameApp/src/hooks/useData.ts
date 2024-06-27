@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react"
 import apiClient from "../Services/apiClient"
-import { CanceledError } from "axios"
+import { AxiosRequestConfig, CanceledError } from "axios"
 
 
 export interface Platform{
@@ -27,7 +27,7 @@ export interface FetchResponse<T> {
 
 
 
-const useData =<T> (endpoint:string) => {
+const useData =<T> (endpoint:string, requestConfig?:AxiosRequestConfig,deps?:any[]) => {
 
     //We need our UseState to help us render update our UI with our games and others
 const [data, setData] = useState<T[]>([])
@@ -46,7 +46,7 @@ useEffect(() => {
 
     const controller = new AbortController();
     setIsLoading(true);
-    apiClient.get<FetchResponse<T>>(endpoint, {signal: controller.signal})
+    apiClient.get<FetchResponse<T>>(endpoint, {signal: controller.signal, ...requestConfig})
         .then(response => {
             setIsLoading(false)
             setData(response.data.results)
@@ -62,7 +62,7 @@ useEffect(() => {
         return () => controller.abort();
 
 
-}, [])
+},deps ? [...deps] : [])
 
 return{data, error, isLoading}
 
