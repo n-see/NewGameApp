@@ -11,7 +11,7 @@ interface GameProps {
 const GameCard = ({ game }: GameProps) => {
     return(
         <>
-            <Card>
+            <Card height={'100%'}>
                 <Image src={getCroppedImageUrl(game.background_image)}/>
                 <CardBody>
                     <Heading fontSize={'2xl'}>{game.name}</Heading>
@@ -19,6 +19,7 @@ const GameCard = ({ game }: GameProps) => {
                         <PlatformIconsList platforms={game.parent_platforms.map(p => p.platform)}/>
                         <CriticScore score={game.metacritic}/>
                     </HStack>
+                    {/* <Heading fontSize={'100%'}>{game.name}</Heading> */}
                 </CardBody>
             </Card>
         </>
